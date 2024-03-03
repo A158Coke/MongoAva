@@ -8,4 +8,5 @@ public class Constantes {
     public static final String granteThan = "$gte";
     public static final String littleThan = "$lt";
     public static  final  String price = "price";
+    public static  final  String total = "total";
 }

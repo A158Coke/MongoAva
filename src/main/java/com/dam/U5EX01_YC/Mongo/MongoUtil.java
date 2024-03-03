@@ -4,6 +4,8 @@ import com.dam.U5EX01_YC.Util.Configuration;
 import com.dam.U5EX01_YC.Util.Constantes;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import org.bson.Document;
@@ -17,10 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Projections.*;
@@ -114,7 +113,50 @@ public class MongoUtil {
         System.out.println("Total venta de producto: " + itemName + ", su numero de venta es: " + total);
     }
 
-    //Consulta numero5
+
+    public void ConsultaVentaDeTodosProductos() {
+        MongoCursor<Document> ventas = null;
+        try {
+            MongoCollection<Document> collection = getCollection();
+            ventas = collection.find().iterator();
+            List<String> itemList = new ArrayList<>();
+            List<Integer> quantityList = new ArrayList<>();
+
+            //Cuando hay mas registros
+            while (ventas.hasNext()) {
+                //un registro, guardamos en el doc obj.
+                Document doc = ventas.next();
+                //String item y int quantity --> guardamos dos atributos(item name y cantidad) de registro
+                String item = doc.getString(Constantes.item);
+                int quantity = Integer.parseInt(doc.getString(Constantes.quantity));
+
+                //usa indexOF method para saber si el item existe en el itemList. Si existe, devuelve el index number, si no, devuelve -1
+                int index = itemList.indexOf(item);
+                //En caso de -1, es decir no existe este item en la lista. lo añadimos a la lista
+                if (index == -1) {
+                    itemList.add(item);
+                    quantityList.add(quantity);
+                } else {
+                    //Si ya existe en la lista, actualizamos su cantidad.
+                    quantityList.set(index, quantityList.get(index) + quantity);
+                }
+            }
+            //Bucle para imprimir, como el itemList y quantityList estan coincidido. itemList[0] coincide quantityList[0].
+            for (int i = 0; i < itemList.size(); i++) {
+                System.out.println(itemList.get(i) + " ---> " + quantityList.get(i));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ventas != null) {
+                ventas.close();
+            }
+        }
+    }
+
+
+    //Consulta con mes y año
     public void ConsultaVenta(int Month, int Year) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(config.getDataFormatRegex());
         String startDay = Year + "-" + Month + "-01T00:00:00Z";

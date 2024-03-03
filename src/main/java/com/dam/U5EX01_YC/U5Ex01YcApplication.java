@@ -14,13 +14,14 @@ public class U5Ex01YcApplication {
 
     public static void main(String[] args) {
         MongoUtil mongoUtil = SpringApplication.run(U5Ex01YcApplication.class, args).getBean(MongoUtil.class);
-        try( Scanner sc = new Scanner(System.in);) {
+        try( Scanner sc = new Scanner(System.in)) {
             while (true) {
                 System.out.println("Que quieres hacer?");
                 System.out.println("1. Insertar los datos csv al mongo DB");
                 System.out.println("2. Consulta el numero de venta de un producto");
                 System.out.println("3. Consulta numero de venta de un mes");
-                System.out.println("4. Exit");
+                System.out.println("4. Consulta el numero de venta de todos los productos");
+                System.out.println("5. Exit");
                 System.out.println("Introduce el numero de operacion que quieres hacer ");
                 int choose = sc.nextInt();
                 switch (choose) {
@@ -47,7 +48,8 @@ public class U5Ex01YcApplication {
                             mongoUtil.ConsultaVenta(mes, year); //Metodo para consulta total ventas(euros) del mes y año especifico
                         }
                     }
-                    case 4 -> System.exit(0);
+                    case 4 -> mongoUtil.ConsultaVentaDeTodosProductos();
+                    case 5 -> System.exit(0);
                 }
             }
         } catch (Exception e) {
