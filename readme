@@ -1,0 +1,31 @@
+Hola, aqui te explico las cosas que tienes saber sobre este proyecto. 
+Los parametros Variasbles esta todos en el application.properties.
+
+Ademas, en el paquete de Util, hay un clase Constantes. Al final, no hay mucha diferencia declarar los valores dentro property file or
+Clase Constantes. Depende de cada persona.
+
+
+Definicion de cada Clase:
+-U5Ex01YcApplication: Aqui tenemos la entrada del programa. Aqui ejecutamos la programa para insertar y hacer los consultas
+-Mongo.Mongoutil: Definir los metodos para insertar los datos, consulta de base dedatos etc.
+-Util.Configuration y Constantes/application.property: Clases para definir los parametros.
+Clase Configuration: lo llamar con metodo getters(), aqui usamos los valores de fichero property. Usando annotation @Value;
+Clase Constantes: usa con Constantes.variable;
+
+
+PS: parece que el mongo no tiene persistencia, cada vez inicia el mongo db hay que ejecutar el metodo para que inserta el datos de csv
+(No estoy seguro)
+
+//Dificuldad:
+-Cuando analiza el csv, hay problema con el direccion. Lleva double commillas. Pero el split sepera la coma dentro de doble commilas
+-Como soluciona: Usar libreria de OpenCSV
+-Dificil de hacer la consulta
+-Es muy complicado hacer la consulta del mes.
+-Siempre hay que ejecutar el mongod primero, a veces olvida
+
+
+//Ventaja:
+-En no relation, no hay estructura, asi que no tenemos que preocupar l'estructura de base de datos. Solo el Key-Value.
+-Muy flexible
+-Facil de importar los datos con los librerias como openCSV.
+
